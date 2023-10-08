@@ -1,9 +1,8 @@
-#include <unistd.h>
+#include "shell.h"
 /**
 *team_members - fuction that write the team members
 *Return: nothing
 */
-void team_members(void);
 
 void team_members(void)
 {
@@ -16,6 +15,6 @@ void team_members(void)
 */
 int main(void)
 {
-team_members();
-return (0);
+	team_members();
+	return (0);
 }
