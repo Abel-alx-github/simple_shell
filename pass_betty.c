@@ -11,10 +11,11 @@ void team_members(void)
 }
 
 /**
- *main - entry point
- *Return: nothing
- */
-void main(void)
+* main - entry point
+* Return: nothing
+*/
+int main(void)
 {
-	team_members();
+team_members();
+return (0);
 }
