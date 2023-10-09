@@ -1,0 +1,70 @@
+#include "shell.h"
+#include <string.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
+#define MAX_INPUT_LENGTH 100
+
+/**
+* interpreter - a function that interprets a line
+* Return: always 0
+*/
+int interpreter(void)
+{
+extern char** environ;
+char input[MAX_INPUT_LENGTH];
+pid_t pid;
+while (1)
+{
+write(STDOUT_FILENO, "$ ", 2);
+if (fgets(input, MAX_INPUT_LENGTH, stdin) == NULL)
+{
+if (feof(stdin))
+{
+printf("\n");
+break;
+}
+else
+{
+perror("error reading the input");
+exit(EXIT_FAILURE);
+}
+}
+input[strlen(input) - 1] = '\0';
+pid = fork();
+if (pid == -1)
+{
+perror("fork failed");
+exit(EXIT_FAILURE);
+}
+else if (pid == 0)
+{
+char *args[2];
+args[0] = input;
+args[1] = NULL;
+execve(input, args, environ);
+perror("command not found");
+exit(EXIT_FAILURE);
+}
+else
+{
+int status;
+waitpid(pid, &status, 0);
+if (WIFEXITED(status))
+{
+int exit_status = WEXITSTATUS(status);
+if (exit_status != 0)
+{
+fprintf(stderr, "command exited %d\n", exit_status);
+}
+}
+else if (WIFSIGNALED(status))
+{
+fprintf(stderr, "command terminated %d\n", WTERMSIG(status));
+}
+}
+}
+return (0);
+}
