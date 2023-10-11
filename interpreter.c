@@ -13,58 +13,52 @@
 */
 int interpreter(void)
 {
-extern char** environ;
+extern char **environ;
 char input[MAX_INPUT_LENGTH];
 pid_t pid;
-while (1)
-{
-write(STDOUT_FILENO, "$ ", 2);
-if (fgets(input, MAX_INPUT_LENGTH, stdin) == NULL)
-{
-if (feof(stdin))
-{
-printf("\n");
-break;
-}
-else
-{
-perror("error reading the input");
-exit(EXIT_FAILURE);
-}
-}
-input[strlen(input) - 1] = '\0';
-pid = fork();
-if (pid == -1)
-{
-perror("fork failed");
-exit(EXIT_FAILURE);
-}
-else if (pid == 0)
-{
-char *args[2];
-args[0] = input;
-args[1] = NULL;
-execve(input, args, environ);
-perror("command not found");
-exit(EXIT_FAILURE);
-}
-else
-{
 int status;
-waitpid(pid, &status, 0);
-if (WIFEXITED(status))
-{
-int exit_status = WEXITSTATUS(status);
-if (exit_status != 0)
-{
-fprintf(stderr, "command exited %d\n", exit_status);
-}
-}
-else if (WIFSIGNALED(status))
-{
-fprintf(stderr, "command terminated %d\n", WTERMSIG(status));
-}
-}
-}
-return (0);
+	while (1)
+	{
+	write(STDOUT_FILENO, "$ ", 2);
+	if (fgets(input, MAX_INPUT_LENGTH, stdin) == NULL)
+	{
+		if (feof(stdin))
+		{
+			printf("\n");
+			break;
+		}
+		else
+		{
+			perror("reading input error");
+			exit(EXIT_FAILURE);
+		}
+	}
+	input[strlen(input) - 1] = '\0';
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork failed");
+		exit(EXIT_FAILURE);
+	}
+	else if (pid == 0)
+	{
+		char *args[] = {input, NULL};
+		execve(input, args, environ);
+		perror("command not found");
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+		{
+			fprintf(stderr, "command exited %d\n", WEXITSTATUS(status));
+		}
+		else if (WIFSIGNALED(status))
+		{
+			fprintf(stderr, "command terminated %d\n", WTERMSIG(status));
+		}
+	}
+	}
+	return (0);
 }
