@@ -16,9 +16,9 @@
 
 void read_input(char *input)
 	{
-		ssize_t bytes_read;
 		write(STDOUT_FILENO, "> ", 2);
-		bytes_read = read(STDIN_FILENO, input, MAX_INPUT_SIZE);
+		ssize_t bytes_read = read(STDIN_FILENO, input, MAX_INPUT_SIZE);
+
 		if (bytes_read > 0 && input[bytes_read - 1] == '\n')
 		{
 			input[bytes_read - 1] = '\0';
@@ -35,7 +35,6 @@ void read_input(char *input)
 
 void execute_command(char *input)
 	{
-		pid_t pid;
 		char *args[MAX_ARGS];
 		char *token = strtok(input, " ");
 		int i = 0;
@@ -46,7 +45,7 @@ void execute_command(char *input)
 			token = strtok(NULL, " ");
 		}
 		args[i] = NULL;
-		pid = fork();
+		pid_t = fork();
 		if (pid == -1)
 		{
 			perror("fork");
