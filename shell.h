@@ -13,4 +13,6 @@ int interpreter(void);
 void read_command(char cmd[], char *para[]);
 int intepreter(void);
 void read_stdin(char *command);
+void read_input(char *input); /* this one as well */
+void execute_command(char *input); /* from the code i added */
 #endif
