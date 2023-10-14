@@ -64,3 +64,48 @@ void execute_command(char *input)
 			wait(NULL);
 		}
 	}
+/**
+* execute_command - to handle a path
+* @input: input value
+*/
+int execute_command(char *input)
+	{
+		pid_t pid
+		char *args[MAX_ARGS];
+    		char *token = strtok(input, " ");
+    		int i = 0;
+		while (token != NULL)
+		{
+			args[i++] = token;
+			token = strtok(NULL, " ");
+		}
+		args[i] = NULL;
+		pid = fork();
+		if (pid == -1)
+		{
+			perror("fork");
+		} else if (pid == 0)
+		{
+			char *envp[] = { NULL };
+			if (execve(args[0], args, envp ) == -1)
+			{
+				perror("execve");
+				exit(EXIT_FAILURE);
+			}
+			else
+			{
+				int status;
+				waitpid(pid, &status, 0);
+				if (WIFEXITED(status)) 
+				{
+					if (WEXITSTATUS(status) == 127)
+					{
+						char error_message[100];
+						sprintf(error_message, "command not found: %s\n", args[0];
+						write(STDOUT_FILENO, error_message, strlen(error_message));
+						return (-1);
+						}
+						}
+						}
+						return (0);
+						}
