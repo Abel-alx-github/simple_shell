@@ -1,4 +1,13 @@
 #include "shell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+/**
+* *get_env - it retrieves the value of a specific variable
+* @envvar: input value
+* Return: always 0
+*/
 char *get_env(const char *envvar)
 {
 	extern char **environ;
@@ -15,6 +24,11 @@ char *get_env(const char *envvar)
 	return (NULL);
 }
 
+/**
+* *fetch_command - it fetchs a command
+* @command: input value
+* Return: always 0
+*/
 char *fetch_command(char *command)
 {
 	char *path = get_env("PATH");
@@ -38,6 +52,12 @@ char *fetch_command(char *command)
 	return (NULL);
 }
 
+/**
+* toknize - tokenize a string based on a specific delimer
+* @input: input value
+* @delimter: input value
+* Return: 0
+*/
 char **toknize(char *input, char *delimter)
 {
 	char **all_tokens;
@@ -57,12 +77,18 @@ char **toknize(char *input, char *delimter)
 	return (all_tokens);
 }
 
+/**
+* _exit_shell - exit shell
+*/
 void _exit_shell(void)
 {
 	write(1, "Goodbye!..man...\n", 18);
 	exit(EXIT_SUCCESS);
 }
 
+/**
+* _print_env - print the current environment
+*/
 void _print_env(void)
 {
 	extern char **environ;
