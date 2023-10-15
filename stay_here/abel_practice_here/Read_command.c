@@ -24,10 +24,17 @@ void read_command(char cmd[], char *para[])
 			free(line);
 			exit(EXIT_FAILURE);
 		}
-		if (size == 0)
-			exit(EXIT_SUCCESS);
-		if (line[size - 1] == '\n')
-			line[size - 1] = '\0';
+	//	if (size == 0)
+	//		exit(EXIT_SUCCESS);
+//		if (line1] == '\n')
+//			line[size - 1] = '\0';
+	line[strcspn(line, "\n")] = '\0';
+  
+      // If the command is empty, continue to the next iteration.
+ 	   if (line[0] == '\0')
+	   {
+	       return;
+	    }
 		token = strtok(line, " \n");
 
 		while (token != NULL)

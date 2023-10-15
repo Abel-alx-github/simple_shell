@@ -7,11 +7,15 @@ int main(void)
 {
 	char cmd[100], command[100], *para[20];
 	char *environ[] = {(char *) "PATH=/bin", NULL};
-
 	while (1)
 	{
 		prompt_message();
 		read_command(command, para);
+		if(command == NULL)
+		{
+			cmd[0] ='\0';
+			continue;
+		}
 		if (fork() != 0)
 		{
 			wait(NULL);
@@ -24,6 +28,7 @@ int main(void)
 		}
 		if (strcmp(command, "exit") == 0)
 			break;
+	
 	}
 	return (0);
 }
