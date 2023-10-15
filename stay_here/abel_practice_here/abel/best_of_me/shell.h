@@ -15,7 +15,8 @@ char *fetch_command(char *command);
 char **toknize(char *input, char *delimter);
 void _exit_shell(void);
 void _print_env(void);
-
+void read_command(char *input, size_t input_size);
+void exec(char **args);
 /**our cudtom  string.h */
 int str_cmp(const char *str1, char *str2);
 char *str_cat(char *dest, char *src);

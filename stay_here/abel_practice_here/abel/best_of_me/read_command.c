@@ -18,9 +18,9 @@ void read_command(char *input, size_t input_size)
 			}
 			else
 			{
-				fprintf(stderr, "Unexpected error: %zd\n", if_getline_fail);
+				fprintf(stderr, "Unexpected error: %lu\n", if_getline_fail);
 			}
 			exit(EXIT_FAILURE);
 		}
-	command[strcspn(command, "\n")] = '\0';
+	input[strcspn(input, "\n")] = '\0';
 }

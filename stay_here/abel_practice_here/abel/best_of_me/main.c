@@ -1,12 +1,14 @@
 #include "shell.h"
-
-int main()
+/**
+*main - entry point
+*
+*Return: 0 on success
+*/
+int main(void)
 {
-	char *input = NULL, *cmd, **args;
+	char *input = NULL, **args;
 	size_t input_size = 0;
-	ssize_t if_getline_fail = 0;
-	pid_t child_pid;
-
+	ssize_t if_getline_fail;
 
 	while (1)
 	{
@@ -14,8 +16,21 @@ int main()
 		if_getline_fail = getline(&input, &input_size, stdin);
 		if (if_getline_fail == -1)
 		{
-			write(1, "\n", 1);
-			exit(1);
+			if (feof(stdin))
+			{
+				printf("End of stream reached\n");
+				exit(EXIT_SUCCESS);
+			}
+			else if (if_getline_fail == EINVAL || if_getline_fail == ENOMEM)
+			{
+				perror("getline");
+				exit(EXIT_FAILURE);
+			}
+			else
+			{
+				fprintf(stderr, "Unexpected error: %lu\n", if_getline_fail);
+			}
+			exit(EXIT_FAILURE);
 		}
 		input[strcspn(input, "\n")] = '\0';
 		if (input[0] == '\0')
@@ -25,27 +40,7 @@ int main()
 			_exit_shell();
 		if (str_cmp(args[0], "env") == 0)
 			_print_env();
-		child_pid = fork();
-		if (child_pid == -1)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		if (child_pid == 0)
-		{
-			cmd = fetch_command(args[0]);
-			if (cmd)
-			{
-				execve(cmd, args, NULL);
-				perror("execve");
-				exit(EXIT_FAILURE);
-			}
-			else
-				write(1, "command not command\n", 20);
-			exit(0);
-		}
-		else
-			wait(NULL);
+		exec(args);
 	}
 	return (0);
 }
