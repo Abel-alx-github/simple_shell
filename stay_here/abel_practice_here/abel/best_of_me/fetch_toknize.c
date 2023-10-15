@@ -1,28 +1,4 @@
 #include "shell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-/**
-* *get_env - it retrieves the value of a specific variable
-* @envvar: input value
-* Return: always 0
-*/
-char *get_env(const char *envvar)
-{
-	extern char **environ;
-	int j;
-	char *key;
-
-	while (environ[j])
-	{
-		key = strtok(environ[j], "=");
-		if (str_cmp(envvar, key) == 0)
-			return (strtok(NULL, "\n"));
-		j++;
-	}
-	return (NULL);
-}
 
 /**
 * *fetch_command - it fetchs a command
@@ -85,16 +61,3 @@ void _exit_shell(void)
 	write(1, "Goodbye!..man...\n", 18);
 	exit(EXIT_SUCCESS);
 }
-
-/**
-* _print_env - print the current environment
-*/
-void _print_env(void)
-{
-	extern char **environ;
-	int j;
-
-	for (j = 0; environ[j] != NULL; j++)
-		printf("%s\n", environ[j]);
-}
-

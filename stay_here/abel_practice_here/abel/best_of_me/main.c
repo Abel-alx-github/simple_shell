@@ -44,3 +44,41 @@ int main(void)
 	}
 	return (0);
 }
+
+/**
+* _print_env - print the current environment
+*/
+void _print_env(void)
+{
+	extern char **environ;
+	int j;
+
+	for (j = 0; environ[j] != NULL; j++)
+	{
+		write(STDOUT_FILENO, environ[j], str_len(environ[j]));
+		write(STDOUT_FILENO, "\n", 1);
+	}
+}
+
+/**
+ *
+ *get_env - it retrieves the value of a specific variable
+ * @envvar: input value
+ * Return: always 0
+ */
+char *get_env(const char *envvar)
+{
+extern	char **environ;
+	int j = 0;
+	char *key;
+
+	while (environ[j])
+	{
+		key = strtok(environ[j], "=");
+		if (str_cmp(envvar, key) == 0)
+			return (strtok(NULL, "\n"));
+		j++;
+	}
+	return (NULL);
+
+}
