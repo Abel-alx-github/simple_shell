@@ -81,7 +81,7 @@ int command_execute(char *input)
 		args[i++] = token;
 		token = strtok(NULL, " ");
 	}
-	args[i] = NULL
+	args[i] = NULL;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -89,7 +89,6 @@ int command_execute(char *input)
 		return (-1);
 	} else if (pid == 0)
 	{
-		char *envp[] = { NULL };
 		if (execvp(args[0], args) == -1)
 		{
 			perror("execvp");
@@ -98,7 +97,7 @@ int command_execute(char *input)
 	} else
 	{
 		int status;
-		waitpid(pid, &&status, 0);
+		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 		{
 			if (WEXITSTATUS(status) == 127)
