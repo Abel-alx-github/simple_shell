@@ -16,4 +16,5 @@ void read_stdin(char *command);
 void read_input(char *input);
 void execute_command(char *input);
 int command_execute(char *input);
+ssize_t arguments(char **lineptr, size_t *n, FILE *stream);
 #endif
