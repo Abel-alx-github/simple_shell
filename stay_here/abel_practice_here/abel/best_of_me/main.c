@@ -13,7 +13,7 @@ int main(void)
 	while (1)
 	{
 		prompt_message();
-		if_getline_fail = getline(&input, &input_size, stdin);
+		if_getline_fail = custom_getline(&input, &input_size, stdin);
 		if (if_getline_fail == -1)
 		{
 			if (feof(stdin))
@@ -23,7 +23,7 @@ int main(void)
 			}
 			else if (if_getline_fail == EINVAL || if_getline_fail == ENOMEM)
 			{
-				perror("getline");
+				perror("custom_getline");
 				exit(EXIT_FAILURE);
 			}
 			else

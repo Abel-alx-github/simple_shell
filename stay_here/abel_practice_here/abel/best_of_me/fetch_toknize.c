@@ -34,7 +34,7 @@ char *fetch_command(char *command)
 * @delimter: input value
 * Return: 0
 */
-char **toknize(char *input, char *delimter)
+/*char **toknize(char *input, char *delimter)
 {
 	char **all_tokens;
 	char *token;
@@ -51,6 +51,36 @@ char **toknize(char *input, char *delimter)
 	}
 	all_tokens[i] =  NULL;
 	return (all_tokens);
+}*/
+char **toknize(char *input, char *delimter)
+{
+    char **all_tokens;
+    char *token;
+    int i = 0;
+
+    all_tokens = malloc(sizeof(char *) * 16);
+    if (all_tokens == NULL) {
+        return NULL;
+    }
+
+    token = strtok(input, delimter);
+    while (token) {
+        if (i >= 16) {
+            all_tokens = realloc(all_tokens, sizeof(char *) * (i + 16));
+            if (all_tokens == NULL) {
+                free(all_tokens);
+                return NULL;
+            }
+        }
+
+        all_tokens[i] = token;
+        i++;
+        token = strtok(NULL, delimter);
+    }
+
+    all_tokens[i] = NULL;
+
+    return all_tokens;
 }
 
 /**

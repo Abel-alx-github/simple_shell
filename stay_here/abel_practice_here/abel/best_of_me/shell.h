@@ -10,6 +10,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
+#define MAX_INPUT_SIZE 1024
+static char buffer[MAX_INPUT_SIZE];
+static int buffer_position;
+static int buffer_size;
+ssize_t custom_getline(char **lineptr, size_t *n, FILE *stream);
+
 char *get_env(const char *envvar);
 char *fetch_command(char *command);
 char **toknize(char *input, char *delimter);
