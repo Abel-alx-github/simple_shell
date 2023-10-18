@@ -18,7 +18,7 @@ int main(void)
 		{
 			if (feof(stdin))
 			{
-				write(1, "End of stream reached\n",23);
+				write(1, "End of stream reached\n", 23);
 				exit(EXIT_SUCCESS);
 			}
 			else if (if_getline_fail == EINVAL || if_getline_fail == ENOMEM)
@@ -53,7 +53,6 @@ int main(void)
 */
 void _print_env(void)
 {
-	extern char **environ;
 	 int j;
 
 	for (j = 0; environ[j] != NULL; j++)
@@ -70,7 +69,6 @@ void _print_env(void)
  */
 char *get_env(const char *envvar)
 {
-extern	char **environ;
 	int j = 0;
 	char *key;
 
