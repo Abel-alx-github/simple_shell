@@ -4,10 +4,8 @@
 *
 *Return: 0 on success
 */
-/*char **environ;*/
 int main(void)
 {
-	
 	char *input = NULL, **args;
 	size_t input_size = 0;
 	ssize_t if_getline_fail;
@@ -34,6 +32,7 @@ int main(void)
 			}
 			exit(EXIT_FAILURE);
 		}
+		input[strcspn(input, "\n")] = '\0';
 		if (input[0] == '\0')
 			continue;
 		args = toknize(input, " \t\n");
@@ -42,9 +41,9 @@ int main(void)
 		if (str_cmp(args[0], "env") == 0)
 		{
 			_print_env();
-			continue;
 		}
 		exec(args);
+		free(input);
 	}
 	return (0);
 }
@@ -65,7 +64,6 @@ void _print_env(void)
 }
 
 /**
- *
  *get_env - it retrieves the value of a specific variable
  * @envvar: input value
  * Return: always 0
@@ -94,26 +92,31 @@ extern	char **environ;
 */
 char *fetch_command(char *command)
 {
-        char *path = get_env("PATH");
-        char *token;
-        char *full_path;
-        struct stat st;
-if (stat(command, &st) == 0 && (st.st_mode & S_IXUSR)) {
-    return (command);}
-        token = strtok(path, ":");
+	char *path = get_env("PATH");
+	char *token;
+	char *full_path;
+	struct stat st;
 
-        while (token)
-        {
-                full_path = malloc(str_len(token) + str_len(command) + 2);
-                str_cpy(full_path, token);
-                str_cat(full_path, "/");
-                str_cat(full_path, command);
-                if (stat(full_path, &st) == 0)
-                        return (full_path);
-                free(full_path);
-                token = strtok(NULL, ":");
-        }
-        return (NULL);
+	if (stat(command, &st) == 0 && (st.st_mode & S_IXUSR))
+	{
+		return (command);
+	}
+	token = strtok(path, ":");
+
+	while (token)
+	{
+		full_path = malloc(str_len(token) + str_len(command) + 2);
+			if (full_path == NULL)
+				return (NULL);
+		str_cpy(full_path, token);
+		str_cat(full_path, "/");
+		str_cat(full_path, command);
+		if (stat(full_path, &st) == 0)
+			return (full_path);
+		free(full_path);
+		token = strtok(NULL, ":");
+	}
+	return (NULL);
 }
 /**
 *exec - function that execute if the args is executable
@@ -122,32 +125,30 @@ if (stat(command, &st) == 0 && (st.st_mode & S_IXUSR)) {
 */
 void exec(char **args)
 {
-        char *cmd;
-        pid_t child_pid;
+	char *cmd;
+	pid_t child_pid;
 
-        cmd = fetch_command(args[0]);
-
-        if (cmd == NULL)
-        {
-                write(1, "command not founddd\n", 20);
-                return;
-        }
-
-        child_pid = fork();
-        if (child_pid == -1)
-        {
-                perror("fork");
-                exit(EXIT_FAILURE);
-        }
-        if (child_pid == 0)
-        {
-                if (cmd)
-                {
-                        execve(cmd, args, NULL);
-                        perror("execve");
-                        exit(EXIT_FAILURE);
-                }
-        }
-        else
-                wait(NULL);
+	child_pid = fork();
+		if (child_pid == -1)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		else if (child_pid == 0)
+		{
+			cmd = fetch_command(args[0]);
+			if (cmd)
+			{
+				execve(cmd, args, NULL);
+				perror("execve");
+				exit(EXIT_FAILURE);
+			}
+			else
+			{
+				write(1, "command not found\n", 20);
+				exit(0);
+			}
+		}
+		else
+			wait(NULL);
 }

@@ -4,14 +4,15 @@
 * *fetch_command - it fetchs a command
 * @command: input value
 * Return: always 0
-*/
+*
 char *fetch_command(char *command)
 {
 	char *path = get_env("PATH");
 	char *token;
 	char *full_path;
 	struct stat st;
-
+if (stat(command, &st) == 0 && (st.st_mode & S_IXUSR)) {
+    return (command);}
 	token = strtok(path, ":");
 
 	while (token)
