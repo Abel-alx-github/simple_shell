@@ -48,3 +48,35 @@ ssize_t arguments(char **lineptr, size_t *n, FILE *stream)
 	}
 	return (position);
 }
+/**
+* wait_and_check_status - to check status
+* @args: arguments
+* @pid: input value
+*/
+void wait_and_check_status(pid_t pid, char **args)
+{
+	int status;
+
+	waitpid(pid, &status, 0);
+
+	if (WIFEXITED(status))
+	{
+		if (WEXITSTATUS(status) == 127)
+		{
+			handle_command_not_found(args[0]);
+		}
+	}
+}
+
+/**
+* handle_command_not_found - checking if a command not found
+* @command: output value
+*/
+void handle_command_not_found(char *command)
+{
+	char error_message[100];
+
+	sprintf(error_message, "command not found: %s\n", command);
+	write(STDOUT_FILENO, error_message, strlen(error_message));
+	exit(EXIT_FAILURE);
+}

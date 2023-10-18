@@ -90,7 +90,9 @@ int command_execute(char *input)
 	{
 		wait_and_check_status(pid, args);
 	}
+	return (0);
 }
+
 /**
 * parse_arguments - parsing an argument
 * @input: input value
@@ -119,36 +121,4 @@ void execute_child_process(char **args)
 		perror("execvp");
 		exit(EXIT_FAILURE);
 	}
-}
-/**
-* wait_and_check_status - to check status
-* @args: arguments
-* @pid: input value
-*/
-void wait_and_check_status(pid_t pid, char **args)
-{
-	int status;
-
-	waitpid(pid, &status, 0);
-
-	if (WIFEXITED(status))
-	{
-		if (WEXITSTATUS(status) == 127)
-		{
-			handle_command_not_found(args[0]);
-		}
-	}
-}
-
-/**
-* handle_command_not_found - checking if a command not found
-* @command: output value
-*/
-void handle_command_not_found(char *command)
-{
-	char error_message[100];
-
-	sprintf(error_message, "command not found: %s\n", command);
-	write(STDOUT_FILENO, error_message, strlen(error_message));
-	exit(EXIT_FAILURE);
 }

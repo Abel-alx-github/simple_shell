@@ -17,4 +17,8 @@ void read_input(char *input);
 void execute_command(char *input);
 int command_execute(char *input);
 ssize_t arguments(char **lineptr, size_t *n, FILE *stream);
+void parse_arguments(char *input, char **args);
+void execute_child_process(char **args);
+void wait_and_check_status(pid_t pid, char **args);
+void handle_command_not_found(char *command);
 #endif
