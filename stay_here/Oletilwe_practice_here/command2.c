@@ -1,4 +1,5 @@
 #include "shell.h"
+#define MAX_INPUT_SIZE 1024
 
 /**
 * arguments - can handle command lines with arguments
@@ -11,13 +12,13 @@ ssize_t arguments(char **lineptr, size_t *n, FILE *stream)
 {
 	size_t buffer_size = MAX_INPUT_SIZE;
 	char *buffer = (char *)malloc(buffer_size * sizeof(char));
+	size_t position = 0;
+	int current_char;
 
 	if (!buffer)
 	{
 		return (-1);
 	}
-	int position = 0;
-	int current_char;
 
 	while (1)
 	{
