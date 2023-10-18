@@ -76,6 +76,7 @@ int command_execute(char *input)
 	char *args[MAX_ARGS];
 	char *token = strtok(input, " ");
 	int i = 0;
+
 	while (token != NULL)
 	{
 		args[i++] = token;
@@ -97,12 +98,15 @@ int command_execute(char *input)
 	} else
 	{
 		int status;
+
 		waitpid(pid, &status, 0);
+
 		if (WIFEXITED(status))
 		{
 			if (WEXITSTATUS(status) == 127)
 			{
 				char error_message[100];
+
 				sprintf(error_message, "command not found: %s\n", args[0]);
 				write(STDOUT_FILENO, error_message, strlen(error_message));
 				return (-1);
