@@ -18,7 +18,7 @@ int main(void)
 		{
 			if (feof(stdin))
 			{
-				write(1, "End of stream reached\n",23);
+				write(1, "End of stream reached\n", 23);
 				exit(EXIT_SUCCESS);
 			}
 			else if (if_getline_fail == EINVAL || if_getline_fail == ENOMEM)
@@ -43,7 +43,6 @@ int main(void)
 			_print_env();
 		}
 		exec(args);
-		free(input);
 	}
 	return (0);
 }
@@ -128,6 +127,12 @@ void exec(char **args)
 	char *cmd;
 	pid_t child_pid;
 
+	cmd = fetch_command(args[0]);
+	if (access(cmd, X_OK) != 0)
+	{
+		write(1, "Command not found.\n", 20);
+		return;
+	}
 	child_pid = fork();
 		if (child_pid == -1)
 		{
@@ -136,7 +141,6 @@ void exec(char **args)
 		}
 		else if (child_pid == 0)
 		{
-			cmd = fetch_command(args[0]);
 			if (cmd)
 			{
 				execve(cmd, args, NULL);
