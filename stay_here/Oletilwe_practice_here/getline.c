@@ -16,6 +16,7 @@ char *custom_getline()
 {
 	char *line = malloc(MAX_INPUT_SIZE * sizeof(char));
 	int position = 0;
+	char current_char;
 
 	while (1)
 	{
@@ -29,7 +30,7 @@ char *custom_getline()
 			}
 		}
 
-		char current_char = buffer[buffer_position++];
+		current_char = buffer[buffer_position++];
 
 		if (current_char == '\n' || current_char == EOF)
 		{

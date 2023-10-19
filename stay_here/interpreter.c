@@ -13,7 +13,6 @@
 */
 int interpreter(void)
 {
-extern char **environ;
 char input[MAX_INPUT_LENGTH];
 pid_t pid;
 int status;
@@ -43,6 +42,7 @@ int status;
 	else if (pid == 0)
 	{
 		char *args[] = {input, NULL};
+
 		execve(input, args, environ);
 		perror("command not found");
 		exit(EXIT_FAILURE);
