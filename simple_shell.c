@@ -9,8 +9,6 @@ int main(int ac, char **av)
 {
 	para_t para[] = { NULL_INIT };
 	int f_d = 2;
-	int j = 0;
-	char *key;
 
 	asm ("mov %1, %0\n\t"
 		"add $3, %0"

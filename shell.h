@@ -161,10 +161,10 @@ void _print_env(void);
 void read_command(char *input, size_t input_size);
 void exec(char **args);
 /**our cudtom  string.h */
-int str_cmp(const char *str1, char *str2);
-char *str_cat(char *dest, char *src);
-char *str_cpy(char *dest, const char *src);
-int str_len(char *str);
+int _str_cmp(const char *str1, char *str2);
+char *_str_cat(char *dest, char *src);
+char *_str_cpy(char *dest, const char *src);
+int _str_len(char *str);
 
 
 void shell_print(const char *text);
