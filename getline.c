@@ -9,7 +9,7 @@
 */
 ssize_t custom_getline(char **lineptr, size_t *n, FILE *stream)
 {
-	char *buffer = malloc(MAX_INPUT_SIZE * sizeof(char));
+	char *buffer = malloc( sizeof(char));
 	int position = 0;
 	int num_chars_read = 0;
 
